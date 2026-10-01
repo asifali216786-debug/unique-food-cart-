@@ -1,0 +1,964 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Unique Food Cart (UFC)</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#fff8ef;
+    color:#222;
+}
+
+header{
+    background:#ff5722;
+    color:white;
+    text-align:center;
+    padding:22px 15px;
+}
+
+header h1{
+    font-size:30px;
+}
+
+header p{
+    margin-top:6px;
+}
+
+.shop-address{
+    background:white;
+    max-width:700px;
+    margin:20px auto;
+    padding:15px 20px;
+    text-align:center;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,.10);
+}
+
+.shop-address h3{
+    color:#e64a19;
+    margin-bottom:7px;
+}
+
+.menu-title{
+    text-align:center;
+    margin:25px 0 10px;
+    font-size:28px;
+}
+
+.menu{
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+
+.card img{
+    width:100%;
+    height:190px;
+    object-fit:cover;
+    display:block;
+}
+
+.card-content{
+    padding:16px;
+}
+
+.card h3{
+    font-size:20px;
+    margin-bottom:8px;
+}
+
+.price{
+    color:#e64a19;
+    font-size:19px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+.order-btn{
+    width:100%;
+    border:0;
+    border-radius:8px;
+    padding:11px;
+    background:#ff5722;
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+}
+
+.order-btn:hover{
+    background:#e64a19;
+}
+
+#orderSection{
+    display:none;
+    max-width:650px;
+    margin:25px auto;
+    padding:20px;
+    background:white;
+    border-radius:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+
+#orderSection h2{
+    margin-bottom:15px;
+}
+
+.order-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:12px 0;
+    border-bottom:1px solid #ddd;
+}
+
+.qty{
+    margin-left:8px;
+}
+
+.qty button{
+    border:0;
+    background:#eee;
+    padding:5px 10px;
+    margin-left:3px;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.total{
+    font-size:21px;
+    font-weight:bold;
+    margin:18px 0;
+}
+
+.input{
+    width:100%;
+    padding:12px;
+    margin-bottom:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+}
+
+textarea.input{
+    height:90px;
+    resize:none;
+}
+
+.place-order{
+    width:100%;
+    border:0;
+    padding:13px;
+    border-radius:8px;
+    background:#25d366;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.clear-order{
+    width:100%;
+    border:0;
+    padding:11px;
+    margin-top:8px;
+    border-radius:8px;
+    background:#555;
+    color:white;
+    cursor:pointer;
+}
+
+.rating{
+    max-width:650px;
+    margin:30px auto;
+    padding:25px;
+    background:white;
+    border-radius:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+    text-align:center;
+}
+
+.rating h2{
+    margin-bottom:12px;
+}
+
+.stars{
+    margin:15px 0;
+}
+
+.star{
+    font-size:38px;
+    color:#ccc;
+    cursor:pointer;
+}
+
+.star.active{
+    color:#ffc107;
+}
+
+.review{
+    width:100%;
+    height:90px;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    resize:none;
+    font-size:15px;
+}
+
+.submit-rating{
+    width:100%;
+    margin-top:10px;
+    border:0;
+    padding:12px;
+    border-radius:8px;
+    background:#ff5722;
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+}
+
+#ratingMessage{
+    margin-top:12px;
+    color:green;
+    font-weight:bold;
+}
+
+footer{
+    margin-top:30px;
+    padding:20px;
+    background:#222;
+    color:white;
+    text-align:center;
+}
+
+@media(max-width:600px){
+
+    header h1{
+        font-size:25px;
+    }
+
+    .menu{
+        padding:12px;
+    }
+
+    .card img{
+        height:200px;
+    }
+
+    .order-row{
+        font-size:14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🍴 Unique Food Cart (UFC)</h1>
+    <p>Delicious Food • Great Taste • Affordable Price</p>
+</header>
+
+
+<!-- SHOP ADDRESS -->
+
+<div class="shop-address">
+    <h3>📍 Visit Us</h3>
+    <p>Unique Food Cart (UFC)</p>
+    <p>Kolkata, West Bengal, India</p>
+</div>
+
+
+<h2 class="menu-title">Our Menu</h2>
+
+
+<section class="menu">
+
+
+<!-- 1 EGG ROLL -->
+
+<div class="card">
+
+    <img
+    src="https://1.bp.blogspot.com/-FtlrI6vhMww/X2jDWCb9zUI/AAAAAAAAMPQ/TmUrBHkFo6Ui-uPBi4D6KHKhKwq6-zebQCLcBGAsYHQ/s16000/Kolkata%2Begg%2Broll.JPG"
+    alt="Egg Roll">
+
+    <div class="card-content">
+
+        <h3>Egg Roll</h3>
+
+        <p class="price">₹35</p>
+
+        <button
+        class="order-btn"
+        onclick="addToCart('Egg Roll',35)">
+
+            Order
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 2 CHICKEN ROLL -->
+
+<div class="card">
+
+    <img
+    src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/mddngwnxixkqicxdkmrp"
+    alt="Chicken Roll">
+
+    <div class="card-content">
+
+        <h3>Chicken Roll</h3>
+
+        <p class="price">₹50</p>
+
+        <button
+        class="order-btn"
+        onclick="addToCart('Chicken Roll',50)">
+
+            Order
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 3 EGG + CHICKEN ROLL -->
+
+<div class="card">
+
+    <img
+    src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Egg_Chicken_Roll.JPG"
+    alt="Egg Chicken Roll">
+
+    <div class="card-content">
+
+        <h3>Egg + Chicken Roll</h3>
+
+        <p class="price">₹60</p>
+
+        <button
+        class="order-btn"
+        onclick="addToCart('Egg + Chicken Roll',60)">
+
+            Order
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 4 VEG CHOWMEIN -->
+
+<div class="card">
+
+    <img
+    src="https://chefalarab.com/uploads/chinese-vegetable-chow-mein.webp"
+    alt="Veg Chowmein">
+
+    <div class="card-content">
+
+        <h3>Veg Chowmein</h3>
+
+        <p class="price">₹35</p>
+
+        <button
+        class="order-btn"
+        onclick="addToCart('Veg Chowmein',35)">
+
+            Order
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 5 CHICKEN CHOWMEIN -->
+
+<div class="card">
+
+    <img
+    src="https://www.onceuponachef.com/images/2023/06/Chicken-Chow-Mein-Hero-7-760x1013.jpg"
+    alt="Chicken Chowmein">
+
+    <div class="card-content">
+
+        <h3>Chicken Chowmein</h3>
+
+        <p class="price">₹50</p>
+
+        <button
+        class="order-btn"
+        onclick="addToCart('Chicken Chowmein',50)">
+
+            Order
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 6 EGG + CHICKEN CHOWMEIN -->
+
+<div class="card">
+
+    <img
+    src="https://zaykedar.com/cdn/shop/files/egg-chicken-noodles-with-20-padding-around.png?v=1769876856"
+    alt="Egg Chicken Chowmein">
+
+    <div class="card-content">
+
+        <h3>Egg + Chicken Chowmein</h3>
+
+        <p class="price">₹60</p>
+
+        <button
+        class="order-btn"
+        onclick="addToCart('Egg + Chicken Chowmein',60)">
+
+            Order
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 7 VEG MOMO -->
+
+<div class="card">
+
+    <img
+    src="https://res.cloudinary.com/dg4wzx8c8/image/upload/v1769686946/recipes/images/sdlrcu3hsd9wjijraxaw.jpg"
+    alt="Veg Momo">
+
+    <div class="card-content">
+
+        <h3>Veg Momo</h3>
+
+        <p class="price">₹45</p>
+
+        <button
+        class="order-btn"
+        onclick="addToCart('Veg Momo',45)">
+
+            Order
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 8 CHICKEN MOMO -->
+
+<div class="card">
+
+    <img
+    src="https://www.archanaskitchen.com/_next/image?q=90&url=https%3A%2F%2Fstorage.googleapis.com%2Fak_strapi_cms_gcp%2Fimages%2Frecipes%2Fsnack-recipes%2Findian-snack-recipes%2FChicken_Momos_Recipe_Delicious_Steamed_Chicken_Dumplings_9f4ba30a90.jpg&w=1920"
+    alt="Chicken Momo">
+
+    <div class="card-content">
+
+        <h3>Chicken Momo</h3>
+
+        <p class="price">₹60</p>
+
+        <button
+        class="order-btn"
+        onclick="addToCart('Chicken Momo',60)">
+
+            Order
+
+        </button>
+
+    </div>
+
+</div>
+
+
+</section>
+
+
+<!-- ORDER SECTION -->
+
+<section id="orderSection">
+
+    <h2>🛒 Your Order</h2>
+
+    <div id="cartItems"></div>
+
+    <p class="total">
+        Total: ₹<span id="totalPrice">0</span>
+    </p>
+
+
+    <input
+    class="input"
+    id="customerName"
+    type="text"
+    placeholder="Your Name">
+
+
+    <input
+    class="input"
+    id="customerPhone"
+    type="tel"
+    placeholder="Your Phone Number">
+
+
+    <textarea
+    class="input"
+    id="customerAddress"
+    placeholder="Your Delivery Address"></textarea>
+
+
+    <button
+    class="place-order"
+    onclick="placeOrder()">
+
+        📱 Place Order on WhatsApp
+
+    </button>
+
+
+    <button
+    class="clear-order"
+    onclick="clearCart()">
+
+        Clear Order
+
+    </button>
+
+</section>
+
+
+<!-- RATING -->
+
+<section class="rating">
+
+    <h2>⭐ Rate Your Experience</h2>
+
+    <div class="stars">
+
+        <span
+        class="star"
+        onclick="selectRating(1)">★</span>
+
+        <span
+        class="star"
+        onclick="selectRating(2)">★</span>
+
+        <span
+        class="star"
+        onclick="selectRating(3)">★</span>
+
+        <span
+        class="star"
+        onclick="selectRating(4)">★</span>
+
+        <span
+        class="star"
+        onclick="selectRating(5)">★</span>
+
+    </div>
+
+
+    <textarea
+    id="review"
+    class="review"
+    placeholder="Write your review (optional)"></textarea>
+
+
+    <button
+    class="submit-rating"
+    onclick="submitRating()">
+
+        Submit Rating
+
+    </button>
+
+
+    <p id="ratingMessage"></p>
+
+</section>
+
+
+<footer>
+
+    <p>© 2026 Unique Food Cart (UFC)</p>
+
+    <p>Thank you for visiting ❤️</p>
+
+</footer>
+
+
+<script>
+
+let cart = [];
+
+let selectedRating = 0;
+
+
+/* ADD TO CART */
+
+function addToCart(name,price){
+
+    const existing =
+        cart.find(item => item.name === name);
+
+    if(existing){
+
+        existing.quantity++;
+
+    }else{
+
+        cart.push({
+            name:name,
+            price:price,
+            quantity:1
+        });
+
+    }
+
+    updateCart();
+
+    document.getElementById("orderSection")
+        .style.display="block";
+
+    document.getElementById("orderSection")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+}
+
+
+/* UPDATE CART */
+
+function updateCart(){
+
+    const cartItems =
+        document.getElementById("cartItems");
+
+    cartItems.innerHTML="";
+
+    let total=0;
+
+
+    cart.forEach(function(item,index){
+
+        const itemTotal =
+            item.price * item.quantity;
+
+        total += itemTotal;
+
+
+        const row =
+            document.createElement("div");
+
+        row.className="order-row";
+
+
+        row.innerHTML=`
+
+            <span>
+                ${item.name} × ${item.quantity}
+            </span>
+
+            <span>
+
+                ₹${itemTotal}
+
+                <span class="qty">
+
+                    <button
+                    onclick="decreaseItem(${index})">
+                        −
+                    </button>
+
+                    <button
+                    onclick="increaseItem(${index})">
+                        +
+                    </button>
+
+                </span>
+
+            </span>
+
+        `;
+
+
+        cartItems.appendChild(row);
+
+    });
+
+
+    document.getElementById("totalPrice")
+        .textContent=total;
+}
+
+
+/* INCREASE QUANTITY */
+
+function increaseItem(index){
+
+    cart[index].quantity++;
+
+    updateCart();
+}
+
+
+/* DECREASE QUANTITY */
+
+function decreaseItem(index){
+
+    if(cart[index].quantity > 1){
+
+        cart[index].quantity--;
+
+    }else{
+
+        cart.splice(index,1);
+
+    }
+
+    updateCart();
+
+
+    if(cart.length===0){
+
+        document.getElementById("orderSection")
+            .style.display="none";
+
+    }
+}
+
+
+/* CLEAR ORDER */
+
+function clearCart(){
+
+    cart=[];
+
+    updateCart();
+
+    document.getElementById("orderSection")
+        .style.display="none";
+}
+
+
+/* PLACE ORDER */
+
+function placeOrder(){
+
+    if(cart.length===0){
+
+        alert("Please select at least one food item.");
+
+        return;
+    }
+
+
+    const name =
+        document.getElementById("customerName")
+        .value.trim();
+
+
+    const phone =
+        document.getElementById("customerPhone")
+        .value.trim();
+
+
+    const address =
+        document.getElementById("customerAddress")
+        .value.trim();
+
+
+    if(!name || !phone || !address){
+
+        alert(
+            "Please enter your name, phone number and delivery address."
+        );
+
+        return;
+    }
+
+
+    let message =
+        "🍴 *NEW ORDER - UNIQUE FOOD CART (UFC)*\n\n";
+
+
+    message +=
+        "*Customer Name:* " +
+        name +
+        "\n";
+
+
+    message +=
+        "*Customer Phone:* " +
+        phone +
+        "\n";
+
+
+    message +=
+        "*Delivery Address:* " +
+        address +
+        "\n\n";
+
+
+    message += "*ORDER DETAILS:*\n";
+
+
+    let total=0;
+
+
+    cart.forEach(function(item){
+
+        const itemTotal =
+            item.price * item.quantity;
+
+        total += itemTotal;
+
+
+        message +=
+            "• " +
+            item.name +
+            " × " +
+            item.quantity +
+            " = ₹" +
+            itemTotal +
+            "\n";
+
+    });
+
+
+    message +=
+        "\n*TOTAL: ₹" +
+        total +
+        "*";
+
+
+    /*
+       UFC SHOP WHATSAPP NUMBER
+       +91 8910440550
+    */
+
+    const shopWhatsAppNumber =
+        "918910440550";
+
+
+    const whatsappURL =
+        "https://wa.me/" +
+        shopWhatsAppNumber +
+        "?text=" +
+        encodeURIComponent(message);
+
+
+    window.location.href = whatsappURL;
+}
+
+
+/* SELECT RATING */
+
+function selectRating(rating){
+
+    selectedRating=rating;
+
+
+    const stars =
+        document.querySelectorAll(".star");
+
+
+    stars.forEach(function(star,index){
+
+        if(index < rating){
+
+            star.classList.add("active");
+
+        }else{
+
+            star.classList.remove("active");
+
+        }
+
+    });
+}
+
+
+/* SUBMIT RATING */
+
+function submitRating(){
+
+    if(selectedRating===0){
+
+        alert("Please select a star rating.");
+
+        return;
+    }
+
+
+    document.getElementById("ratingMessage")
+        .textContent =
+        "Thank you for your " +
+        selectedRating +
+        "/5 rating! ⭐";
+
+
+    document.getElementById("review")
+        .value="";
+
+
+    selectedRating=0;
+
+
+    document.querySelectorAll(".star")
+        .forEach(function(star){
+
+            star.classList.remove("active");
+
+        });
+}
+
+</script>
+
+</body>
+</html>
+```
+  
